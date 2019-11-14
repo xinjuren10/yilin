@@ -63,7 +63,7 @@
                         }
                         this.$message({
                             type:res.code==200?"success":"error",
-                            message:res.data
+                            message:res.msg
                         })
                     })
                     }
@@ -79,7 +79,7 @@
                   }else{
                       this.$message({
                           type:"error",
-                          message:res.data
+                          message:res.msg
                       })
                   }
               })

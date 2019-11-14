@@ -68,12 +68,12 @@
                 <el-form-item label="URL" >
                     <el-input v-model="form.url" class="nameForm"></el-input>
                 </el-form-item>
-                <el-form-item label="菜单类型" >
-                    <el-checkbox-group v-model="form.type">
-                        <el-checkbox label="平台后台" value="平台后台"></el-checkbox>
-                        <el-checkbox label="医院后台" value="医院后台"></el-checkbox>
-                    </el-checkbox-group>
-                </el-form-item>
+                <!--<el-form-item label="菜单类型" >-->
+                    <!--<el-checkbox-group v-model="form.type">-->
+                        <!--<el-checkbox label="平台后台" value="平台后台"></el-checkbox>-->
+                        <!--<el-checkbox label="医院后台" value="医院后台"></el-checkbox>-->
+                    <!--</el-checkbox-group>-->
+                <!--</el-form-item>-->
                 <el-form-item label="菜单目录(不选默认一级菜单)" style="font-size:12px;">
                     <el-tree
                             :check-strictly="checkOne"
@@ -213,8 +213,13 @@
                     this.menuVisible=true;
                     this.menu=row
                 }else{
+                    this.checkKey.splice(0,1)
+                    this.checkKey.push(row.id)
+                    this.$nextTick(() => {
+                        this.$refs.tree.setCheckedKeys(this.checkKey);//获取已经设置的资源后渲染
+                    });
                     this.addFlag=false
-                    this.dialogFormVisible=true;
+                    this.dialogFormVisible=true
                     this.form=row
                 }
             },
@@ -234,17 +239,13 @@
                 this.current=val
                 this.getRoomList()
             },
-            goAddMenu(){
+            goAddMenu (){
                 this.$router.push({name:"addMenu"})
             },
             getMenuList(){
              this.$api.system.getMenuList().then(res=>{
                  this.loading=false
-                 this.$message({
-                     type:res.code==200?"success":"error",
-                     message:res.msg
-                 })
-                 if(res.code===200 && res.data){
+                 if(res.code===200&&res.data){
                      const listData=[];
                      res.data.forEach(function(item,index){
                          listData.push(item)
@@ -256,8 +257,11 @@
                      })
                      this.tableData=listData
                      this.data=res.data
-                 }else {
-                     this.tableData=[]
+                 }else{
+                     this.$message({
+                         type:res.code===200?"success":"error",
+                         message:res.msg
+                     })
                  }
              })
             },
@@ -280,7 +284,7 @@
                         "level":"",
                         "funcName":this.form.funcName,
                         "serialNo": "",
-                        "parientId": this.checkedNode.length>0?this.checkedNode[0].id:0,
+                        "pid": this.checkedNode.length>0?this.checkedNode[0].id:0,
                         "status":this.form.status==true?"closed":"open",
                         "type": "func",
                         "url":this.form.url

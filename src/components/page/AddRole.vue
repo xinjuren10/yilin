@@ -20,6 +20,7 @@
                     :highlight-current="true"
                     @check-change="getChecked"
                     default-expand-all
+                    :props="defaultProps"
                     :expand-on-click-node="false">
         <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
@@ -202,13 +203,16 @@
                 role: [],
                 funcIds:[],
                 system:'',//医院id
-                form:{name:""}
+                form:{name:""},
+                defaultProps:{
+                    children: 'child',
+                    label: 'funcName'
+                }
             }
         },
         methods:{
             getMenuList(){
                 this.$api.system.getMenuList().then(res=>{
-                    console.log(res)
                     this.data=res.data
                 })
             },
