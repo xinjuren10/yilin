@@ -16,7 +16,7 @@
     "vue": "^2.6.10",
     "js-cookie": "^2.2.0",
     "ps": "^1.0.0",
-    "qs": "^6.9.0",
+    "qs": "^6.9.7",
     "vue-cropperjs": "^3.0.0",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.3",
